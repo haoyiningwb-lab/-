@@ -37,7 +37,7 @@ if check_password():
             r = requests.get("https://api.exchangerate-api.com/v4/latest/ZAR", timeout=2)
             return r.json()['rates']['CNY']
         except:
-            return 0.39 # 2026年参考汇率 [cite: 2, 573]
+            return 0.39 # 2026年参考汇率
 
     rate = get_zar_rate()
 
@@ -69,14 +69,14 @@ if check_password():
         
         st.divider()
         
-        # 行李核对清单 [cite: 577, 578]
+        # 行李核对清单
         st.header("🎒 实时行李核对")
         with st.expander("行李检查清单"):
-            st.checkbox("大三圆头转换器", key="plug") [cite: 615]
-            st.checkbox("护照/签证/复印件", key="docs") [cite: 600]
-            st.checkbox("防虫驱蚊水", key="spray") [cite: 607]
-            st.checkbox("防晒霜/帽子", key="sun") [cite: 585]
-            st.checkbox("长袖衬衫/外套", key="cloth") [cite: 619, 620]
+            st.checkbox("大三圆头转换器", key="plug")
+            st.checkbox("护照/签证/复印件", key="docs")
+            st.checkbox("防虫驱蚊水", key="spray")
+            st.checkbox("防晒霜/帽子", key="sun")
+            st.checkbox("长袖衬衫/外套", key="cloth")
 
         st.divider()
         st.error("🚨 报警: 10111")
@@ -104,25 +104,22 @@ if check_password():
                     st.balloons()
             
             st.divider()
-            st.write("**🏆 五霸成就墙 (Big Five)**") [cite: 534]
-            # 五霸打卡复选框
+            st.write("**🏆 五霸成就墙 (Big Five)**")
             for a in ["狮子", "大象", "水牛", "豹", "犀牛"]:
                 st.checkbox(a, key=f"big5_{a}")
             
-            # 进度统计
             found_num = sum([st.session_state.get(f"big5_{a}", False) for a in ["狮子", "大象", "水牛", "豹", "犀牛"]])
             st.progress(found_num / 5)
             st.write(f"收集进度: {found_num}/5")
 
     elif menu == "📅 行程助手":
         st.title("📅 每日行程导航")
-        # 核心行程细节 [cite: 5]
         days_info = {
-            "2026-02-11 (Day 3)": {"task": "开普敦市区：Truth Coffee, 波卡普, 坎普斯湾日落", "dist": "城区自驾约 20km", "sunset": "19:45"}, [cite: 5, 80]
-            "2026-02-12 (Day 4)": {"task": "半岛巡礼：海豹岛, 企鹅聚集地, 好望角", "dist": "往返约 140km", "sunset": "19:43"}, [cite: 5, 227]
-            "2026-02-15 (Day 7)": {"task": "赫曼努斯观鲸 & Creation Wines 酒庄", "dist": "约 120km", "sunset": "19:38"}, [cite: 5, 373, 387]
-            "2026-02-16 (Day 8)": {"task": "阿古拉斯角 & 前往克尼斯纳", "dist": "今日驾驶较长约 400km", "sunset": "19:30"}, [cite: 5, 425]
-            "2026-02-17 (Day 9)": {"task": "极限挑战：布劳克朗斯大桥蹦极 & 齐齐卡马", "dist": "约 80km", "sunset": "19:25"} [cite: 5, 457]
+            "2026-02-11 (Day 3)": {"task": "开普敦市区：Truth Coffee, 波卡普, 坎普斯湾日落", "dist": "城区自驾约 20km", "sunset": "19:45"},
+            "2026-02-12 (Day 4)": {"task": "半岛巡礼：海豹岛, 企鹅聚集地, 好望角", "dist": "往返约 140km", "sunset": "19:43"},
+            "2026-02-15 (Day 7)": {"task": "赫曼努斯观鲸 & Creation Wines 酒庄", "dist": "约 120km", "sunset": "19:38"},
+            "2026-02-16 (Day 8)": {"task": "阿古拉斯角 & 前往克尼斯纳", "dist": "今日驾驶较长约 400km", "sunset": "19:30"},
+            "2026-02-17 (Day 9)": {"task": "极限挑战：布劳克朗斯大桥蹦极 & 齐齐卡马", "dist": "约 80km", "sunset": "19:25"}
         }
         sel_date = st.selectbox("选择旅行日期:", list(days_info.keys()))
         
@@ -131,12 +128,11 @@ if check_password():
         c2.metric("预计里程", days_info[sel_date]["dist"])
         c3.metric("建议日落", days_info[sel_date]["sunset"])
         
-        st.info(f"🚩 **行程详情:** {days_info[sel_date]['task']}")
+        st.info(f"🚩 行程详情: {days_info[sel_date]['task']}")
         
-        # 互动地图预览 [cite: 11]
         m = folium.Map(location=[-33.92, 18.42], zoom_start=6)
-        folium.Marker([-33.92, 18.42], popup="开普敦", tooltip="起点").add_to(m) [cite: 55]
-        folium.Marker([-24.01, 31.48], popup="克鲁格", tooltip="游猎区", icon=folium.Icon(color='green')).add_to(m) [cite: 528]
+        folium.Marker([-33.92, 18.42], popup="开普敦", tooltip="起点").add_to(m)
+        folium.Marker([-24.01, 31.48], popup="克鲁格", tooltip="游猎区", icon=folium.Icon(color='green')).add_to(m)
         folium_static(m, width=900)
 
     elif menu == "🛡️ 自驾与安全":
@@ -145,17 +141,17 @@ if check_password():
         with sc1:
             st.warning("**⚡ Loadshedding (停电预警)**")
             st.write("请下载 EskomSePush 实时监控限电等级。")
-            st.info("💡 提醒: 伊丽莎白港旅馆配有太阳能(#Solar Energy)，电力无忧。") [cite: 5, 470]
+            st.info("💡 提醒: 伊丽莎白港旅馆配有太阳能(#Solar Energy)，电力无忧。")
         with sc2:
             st.warning("**🚗 自驾防盗**")
             st.write("红绿灯处请锁死车窗，切勿在车内明处放置贵重物品。")
-            st.error("紧急联系电话: 10111 (警察)") [cite: 600]
+            st.error("紧急联系电话: 10111 (警察)")
 
         st.divider()
         st.subheader("🍴 行程单必选打卡")
-        st.write("- **Truth Coffee**: 蒸汽朋克主题，全球知名。") [cite: 80, 123]
-        st.write("- **Creation Wines**: 赫曼努斯著名酒庄餐厅。") [cite: 387]
-        st.write("- **好望角标志**: 拍照留念必经点。") [cite: 228]
+        st.write("- Truth Coffee: 蒸汽朋克主题，全球知名。")
+        st.write("- Creation Wines: 赫曼努斯著名酒庄餐厅。")
+        st.write("- 好望角标志: 拍照留念必经点。")
 
     st.markdown("---")
-    st.caption("pqcat 2026 南非行程定制助手 | 数据来源: 穷游行程助手") [cite: 4]
+    st.caption("pqcat 2026 南非行程定制助手 | 数据来源: 穷游行程助手")
